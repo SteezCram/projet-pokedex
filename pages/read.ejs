@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Pokédex</title>
+
+        <link rel="stylesheet" href="/css/main.css">
+        <link rel="stylesheet" href="/css/tailwind.css">
+    </head>
+
+    <body class="min-h-screen w-screen flex flex-col dark:bg-black bg-white dark:text-white text-black">
+        <%- include('../layouts/header.ejs'); -%>
+
+        <main class="dark:bg-black bg-white flex-1 p-8 mx-auto max-w-md md:max-w-xl lg:max-w-4xl 2xl:max-w-7xl">
+            <h3 class="text-xl font-bold text-center mb-5"><%- pokemon.name -%> n°<%- pokemon.id -%></h3>
+
+            <section class="grid md:gap-4 grid-cols-1 md:grid-cols-2">
+                <img class="rounded w-72 h-72 bg-gray-100 ml-auto mb-3 md:mb-0" src="<%- pokemon.image -%>" alt="<%- pokemon.name -%>">
+                
+                <article class="mr-auto w-72">
+                    <p class="mb-3"><%- pokemon.description -%></p>
+
+                    <div class="bg-blue-500 rounded p-4 grid grid-cols-1 md:grid-cols-2 md:gap-2 mb-3">
+                        <div class="flex flex-col mb-1 md:mb-0">
+                            <p class="font-bold">Size</p>
+                            <p><%- pokemon.size -%> m</p>
+                        </div>
+
+                        <div class="flex flex-col mb-1 md:mb-0">
+                            <p class="font-bold">Ability</p>
+                            <p><%- pokemon.ability -%></p>
+                        </div>
+
+                        <div class="flex flex-col">
+                            <p class="font-bold">Weight</p>
+                            <p><%- pokemon.weight -%> kg</p>
+                        </div>
+                    </div>
+
+                    <p class="font-bold mb-1">Type(s)</p>
+                    <div class="flex flex-row">
+                        <% pokemon.types.forEach(y => { %>
+                            <p class="px-2 py-1 rounded-full text-sm font-bold text-white mr-2" style="background-color: <%- Pokemon.getTypeColor(y) -%>;"><%- y -%></p>
+                        <% }); %>
+                    </div>
+                </article>
+            </section>
+        </main>
+
+        <%- include('../layouts/footer.ejs'); -%>
+    </body>
+</html>

@@ -13,17 +13,25 @@
     <body class="min-h-screen w-screen flex flex-col dark:bg-black bg-white dark:text-white text-black">
         <%- include('../layouts/header.ejs'); -%>
 
-        <main class="dark:bg-black bg-white flex-1 p-8 h-full mx-auto max-w-md md:max-w-xl lg:max-w-4xl 2xl:max-w-7xl grid md:gap-2 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            <% pokemons.forEach(x => { %>
-                <section class="flex flex-col rounded dark:bg-gray-900 bg-gray-100 cursor-pointer">
-                    <img class="rounded-t w-64 h-64" src="<%- x.image -%>" alt="<%- x.name -%>">
-                    
-                    <div class="p-2">
-                        <p class="mb-1">n°<%- x.id -%></p>
-                        <h3 class="text-xl font-bold"><%- x.name -%></h3>
-                    </div>
-                </section>
-            <% }); %>
+        <main class="dark:bg-black bg-white flex-1 p-8 mx-auto max-w-md md:max-w-xl lg:max-w-4xl 2xl:max-w-7xl">
+            <section class="grid md:gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                <% pokemons.forEach(x => { %>
+                    <article onclick="window.location = `/<%- x.id -%>`" class="flex flex-col rounded dark:bg-gray-900 bg-gray-100 cursor-pointer hover:scale-105 duration-200 ease-in-out">
+                        <img class="rounded-t w-64 h-64" src="<%- x.image -%>" alt="<%- x.name -%>">
+                        
+                        <div class="p-2">
+                            <p class="mb-1">n°<%- x.id -%></p>
+                            <h3 class="text-xl font-bold"><%- x.name -%></h3>
+                        </div>
+
+                        <div class="flex flex-row px-2 pb-2">
+                            <% x.types.forEach(y => { %>
+                                <p class="px-2 py-1 rounded-full text-sm font-bold text-white mr-2" style="background-color: <%- Pokemon.getTypeColor(y) -%>;"><%- y -%></p>
+                            <% }); %>
+                        </div>
+                    </article>
+                <% }); %>
+            </section>
         </main>
 
         <%- include('../layouts/footer.ejs'); -%>

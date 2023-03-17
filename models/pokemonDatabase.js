@@ -22,6 +22,7 @@ module.exports = class PokemonDatabase
             return false;
 
         try {
+            delete pokemon.image;
             await fs.promises.writeFile(path.join('data', `${pokemon.id}.json`), JSON.stringify(pokemon));
         }
         catch (error) {

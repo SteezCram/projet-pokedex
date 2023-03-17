@@ -18,7 +18,10 @@ app.use(express.static('static'));
 
 
 app.get('/', async (req, res) => {
-    res.render('index', { pokemons: await PokemonDatabase.getAll() });
+    res.render('index', { Pokemon: require('./models/pokemon'), pokemons: await PokemonDatabase.getAll() });
+});
+app.get('/:id', async (req, res) => {
+    res.render('read', { Pokemon: require('./models/pokemon'), pokemon: await PokemonDatabase.get(req.params.id) });
 });
 app.get('/add', async (req, res) => {
     res.render('add');
