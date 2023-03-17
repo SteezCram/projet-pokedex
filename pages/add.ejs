@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Pokédex</title>
+
+        <link rel="stylesheet" href="/css/main.css">
+        <link rel="stylesheet" href="/css/tailwind.css">
+    </head>
+
+    <body class="min-h-screen w-screen flex flex-col dark:bg-black bg-white dark:text-white text-black">
+        <%- include('../layouts/header.ejs'); -%>
+
+        <main class="dark:bg-black bg-white flex-1 p-8">
+            <section class="max-w-md md:max-w-xl lg:max-w-4xl 2xl:max-w-7xl mx-auto">
+                <h3 class="text-2xl font-bold mb-3 text-center">Add pokemon</h3>
+
+                <form method="post" action="#">
+                    <fieldset class="grid grid-cols-1 md:grid-cols-2 md:gap-2 mb-3">
+                        <legend class="mb-1">Base information</legend>
+
+                        <div>
+                            <label for="nameInput" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
+                            <input id="nameInput" type="text" name="name" placeholder="Bulbizarre" class="w-full p-2 border dark:border-gray-700 border-gray-300 dark:bg-gray-900 bg-gray-100 rounded" required>
+                        </div>
+
+                        <div>
+                            <label for="idInput" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ID</label>
+                            <input id="idInput" type="number" name="id" placeholder="1" class="w-full p-2 border dark:border-gray-700 border-gray-300 dark:bg-gray-900 bg-gray-100 rounded" required min="1">
+                        </div>
+                        
+                        <div>
+                            <label for="sizeInput" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Size (m)</label>
+                            <input id="sizeInput" type="number" name="size" placeholder="0.7" class="w-full p-2 border dark:border-gray-700 border-gray-300 dark:bg-gray-900 bg-gray-100 rounded" required min="0" step="0.01">
+                        </div>
+                        
+                        <div>
+                            <label for="weightInput" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Weight (kg)</label>
+                            <input id="weightInput" type="number" name="weight" placeholder="6.9" class="w-full p-2 border dark:border-gray-700 border-gray-300 dark:bg-gray-900 bg-gray-100 rounded" required min="0" step="0.01">
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="flex flex-row mb-3">
+                        <legend class="mb-1">Sex of the pokemon</legend>
+                        
+                        <ul class="items-center w-full text-sm font-medium text-gray-900 bg-gray-100 border border-gray-300 rounded sm:flex dark:bg-gray-900 dark:border-gray-700 dark:text-white">
+                            <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                                <div class="flex items-center pl-3">
+                                    <input id="male" type="checkbox" name="sex" value="male" class="w-4 h-4 text-blue-600 bg-gray-200 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                    <label for="male" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Male</label>
+                                </div>
+                            </li>
+
+                            <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                                <div class="flex items-center pl-3">
+                                    <input id="female" type="checkbox" name="sex" value="female" class="w-4 h-4 text-blue-600 bg-gray-200 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                    <label for="female" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Female</label>
+                                </div>
+                            </li>
+
+                            <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                                <div class="flex items-center pl-3">
+                                    <input id="unknown" type="checkbox" name="sex" value="unknown" class="w-4 h-4 text-blue-600 bg-gray-200 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                    <label for="unknown" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Unknown</label>
+                                </div>
+                            </li>
+                        </ul>
+                    </fieldset>
+
+                    <fieldset class="grid grid-cols-1 md:grid-cols-2 md:gap-2 mb-3">
+                        <legend class="mb-1">Types and abilities</legend>
+
+                        <div>
+                            <label for="type1Input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First type</label>
+                            <input id="type1Input" type="text" name="type1" placeholder="Grass" class="w-full p-2 border dark:border-gray-700 border-gray-300 dark:bg-gray-900 bg-gray-100 rounded" required list="typesDataList">
+                        </div>
+
+                        <div>
+                            <label for="type2Input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Second type</label>
+                            <input id="type2Input" type="text" name="type2" placeholder="Poison" class="w-full p-2 border dark:border-gray-700 border-gray-300 dark:bg-gray-900 bg-gray-100 rounded" required list="typesDataList">
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label for="abilityInput" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Second type</label>
+                            <input id="abilityInput" type="text" name="ability" placeholder="Overgrow" class="w-full p-2 border dark:border-gray-700 border-gray-300 dark:bg-gray-900 bg-gray-100 rounded" required list="abilitiesDataList">
+                        </div>
+
+                        <datalist id="typesDataList"></datalist>
+                        <datalist id="abilitiesDataList"></datalist>
+                    </fieldset>
+
+                    <textarea id="descriptionTextArea" placeholder="Description" class="w-full mb-3 p-2 border dark:border-gray-700 border-gray-300 dark:bg-gray-900 bg-gray-100 rounded" rows="4" cols="50" maxlength="200" required></textarea>
+                
+                    <div>
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="imageFileInput">Choose an image</label>
+                        <input id="imageFileInput" type="file" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help">
+                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="imageFileInputHelp">GIF, JPG, PNG, SVG or WEBP (MAX. 1 MB).</p>
+                    
+                        <image id="imagePreview" class="w-64 h-64 object-cover rounded-lg mt-3" src="https://via.placeholder.com/300x300.png?text=No+image+selected" alt="No image selected"></image>
+                    </div>
+
+                    <button id="submit" type="submit" class="bg-blue-500 text-white w-full px-4 py-2 rounded mt-5">Add pokemon</button>
+                </form>
+            </section>
+        </main>
+
+        <script type="module">
+            /**
+             * Verify if the type exists.
+             * @param {Event} event - The event
+             */
+            function verifyType(event)
+            {
+                const target = event.target;
+                const value = event.target.value;
+
+                if (type1Input.value === type2Input.value) {
+                    target.setCustomValidity('You can\'t choose the same type twice');
+                }
+                else if (types.indexOf(value) === -1) {
+                    target.setCustomValidity('The type you entered doesn\'t exist');
+                }
+                else {
+                    target.setCustomValidity('');
+                }
+
+                target.reportValidity();
+            }
+
+            /**
+             * Verify if the ability exists.
+             * @param {Event} event - The event
+             */
+            function verifyAbility(event)
+            {
+                const target = event.target;
+                const value = event.target.value;
+
+                if (types.indexOf(value) === -1) {
+                    target.setCustomValidity('The ability you entered doesn\'t exist');
+                }
+                else {
+                    target.setCustomValidity('');
+                }
+
+                target.reportValidity();
+            }
+
+            /**
+             * Read a file and return a promise with the data url.
+             * @param {File} file - The file to read
+             * @returns {Promise<string>} - The data url
+             */
+            function getFileDataURL(file)
+            {
+                return new Promise((resolve, reject) =>
+                {
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = function () {
+                        resolve(reader.result);
+                    };
+                    reader.onerror = function (error) {
+                        reject(error);
+                    };
+                });
+            }
+
+
+            const form = document.querySelector('form');
+            const submit = document.querySelector('#submit');
+            const imageFileInput = document.querySelector('#imageFileInput');
+            const descriptionTextArea = document.querySelector('#descriptionTextArea');
+            const type1Input = document.querySelector('#type1Input');
+            const type2Input = document.querySelector('#type2Input');
+            const abilityInput = document.querySelector('#abilityInput');
+            const weightInput = document.querySelector('#weightInput');
+            const sizeInput = document.querySelector('#sizeInput');
+            const idInput = document.querySelector('#idInput');
+            const nameInput = document.querySelector('#nameInput');
+            const typesDataList = document.querySelector('#typesDataList');
+            const abilitiesDataList = document.querySelector('#abilitiesDataList');
+            const imagePreview = document.querySelector('#imagePreview');
+
+            const types = (await (await fetch('/types.json')).json()).map(x => x.name);
+            for (const x of types) {
+                const option = document.createElement('option');
+                option.value = x;
+                typesDataList.appendChild(option);
+            }
+
+            const abilities = (await (await fetch('/abilities.json')).json()).map(x => x.name);
+            for (const x of abilities) {
+                const option = document.createElement('option');
+                option.value = x;
+                abilitiesDataList.appendChild(option);
+            }
+
+
+            if (imageFileInput.files) {
+                imagePreview.src = await getFileDataURL(imageFileInput.files[0]);
+            }
+
+            type1Input.addEventListener('change', verifyType);
+            type2Input.addEventListener('change', verifyType);
+            abilityInput.addEventListener('change', verifyAbility);
+            imageFileInput.addEventListener('change', async event =>
+            {
+                const mimeTypes = ['image/gif', 'image/jpeg', 'image/png', 'image/svg+xml', 'image/webp'];
+                const target = event.target;
+                const file = event.target.files[0];
+
+                if (file.size > 1024 * 1024) {
+                    target.setCustomValidity('The file is too big');
+                }
+                else if (mimeTypes.indexOf(file.type) === -1) {
+                    target.setCustomValidity('The file type is not supported');
+                }
+                else if (file.name.length > 100) {
+                    target.setCustomValidity('The file name is too long');
+                }
+                else if (file.name.match(/[^a-zA-Z0-9\.\-_]/g)) {
+                    target.setCustomValidity('The file name contains invalid characters');
+                }
+                else {
+                    try { imagePreview.src = await getFileDataURL(file); } catch { }
+                    target.setCustomValidity('');
+                }
+
+                target.reportValidity();
+            });
+
+            form.addEventListener('submit', async event =>
+            {
+                // Prevent the form from submitting
+                event.preventDefault();
+
+                const file = imageFileInput.files[0];
+                const fileExtensions = {
+                    'image/gif': 'gif',
+                    'image/jpeg': 'jpg',
+                    'image/png': 'png',
+                    'image/svg+xml': 'svg',
+                    'image/webp': 'webp'
+                };
+
+                const pokemon = {
+                    name: nameInput.value,
+                    id: idInput.value.padStart(4, '0'),
+                    size: Number.parseFloat(sizeInput.value),
+                    weight: Number.parseFloat(weightInput.value),
+                    ability: abilityInput.value,
+                    types: [type1Input.value, type2Input.value].filter(x => x !== ''),
+                    description: descriptionTextArea.value,
+                    image: {
+                        name: `${idInput.value.padStart(4, '0')}.${fileExtensions[file.type]}`,
+                        data: await getFileDataURL(file)
+                    }
+                }
+
+                const response = await fetch('/api/pokemons', {
+                    method: 'POST',
+                    body: JSON.stringify(pokemon),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+            });
+        </script>
+
+        <%- include('../layouts/footer.ejs'); -%>
+    </body>
+</html>

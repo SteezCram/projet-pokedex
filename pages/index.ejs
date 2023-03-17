@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Pokédex</title>
+
+        <link rel="stylesheet" href="/css/main.css">
+        <link rel="stylesheet" href="/css/tailwind.css">
+    </head>
+
+    <body class="min-h-screen w-screen flex flex-col dark:bg-black bg-white dark:text-white text-black">
+        <%- include('../layouts/header.ejs'); -%>
+
+        <main class="dark:bg-black bg-white flex-1 p-8 h-full mx-auto max-w-md md:max-w-xl lg:max-w-4xl 2xl:max-w-7xl grid md:gap-2 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <% pokemons.forEach(x => { %>
+                <section class="flex flex-col rounded dark:bg-gray-900 bg-gray-100 cursor-pointer">
+                    <img class="rounded-t w-64 h-64" src="<%- x.image -%>" alt="<%- x.name -%>">
+                    
+                    <div class="p-2">
+                        <p class="mb-1">n°<%- x.id -%></p>
+                        <h3 class="text-xl font-bold"><%- x.name -%></h3>
+                    </div>
+                </section>
+            <% }); %>
+        </main>
+
+        <%- include('../layouts/footer.ejs'); -%>
+    </body>
+</html>
