@@ -23,7 +23,8 @@ app.get('/', async (req, res) => {
 app.get('/add', async (req, res) => {
     res.render('add');
 });
-app.get('/edit/:id', async (req, res) => {
+app.get('/edit/:id', async (req, res) =>
+{
     const pokemon = await PokemonDatabase.get(req.params.id);
 
     if (pokemon == null) {
@@ -50,12 +51,6 @@ app.get('/:id', async (req, res) =>
 app.get('*', function(req, res){
     res.sendStatus(404);
 });
-// app.get('/assets/:directory*', (req, res) => {
-//     res.sendFile(path.join(__dirname, 'assets', req.params.directory, req.params[0]));
-// });
-// app.get('/:file', (req, res) => {
-//     res.sendFile(path.join(__dirname, 'static', req.params.file));
-// });
 
 
 app.patch('/api/pokemons/:id', async (req, res) =>
@@ -74,6 +69,7 @@ app.patch('/api/pokemons/:id', async (req, res) =>
     }
 });
 
+
 app.post('/api/pokemons', async (req, res) =>
 {
     try
@@ -90,6 +86,7 @@ app.post('/api/pokemons', async (req, res) =>
         res.sendStatus(500);
     }
 });
+
 
 app.delete('/api/pokemons/:id', async (req, res) =>
 {
