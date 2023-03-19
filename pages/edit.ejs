@@ -21,24 +21,19 @@
                     <fieldset class="grid grid-cols-1 md:grid-cols-2 md:gap-2 mb-3">
                         <legend class="mb-1">Base information</legend>
 
-                        <div>
+                        <div class="md:col-span-2">
                             <label for="nameInput" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
-                            <input id="nameInput" type="text" name="name" placeholder="Bulbizarre" class="w-full p-2 border dark:border-gray-700 border-gray-300 dark:bg-gray-900 bg-gray-100 rounded" required>
-                        </div>
-
-                        <div>
-                            <label for="idInput" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ID</label>
-                            <input id="idInput" type="number" name="id" placeholder="1" class="w-full p-2 border dark:border-gray-700 border-gray-300 dark:bg-gray-900 bg-gray-100 rounded" required min="1">
+                            <input id="nameInput" type="text" name="name" placeholder="Bulbizarre" value="<%- pokemon.name -%>" class="w-full p-2 border dark:border-gray-700 border-gray-300 dark:bg-gray-900 bg-gray-100 rounded" required>
                         </div>
                         
                         <div>
                             <label for="sizeInput" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Size (m)</label>
-                            <input id="sizeInput" type="number" name="size" placeholder="0.7" class="w-full p-2 border dark:border-gray-700 border-gray-300 dark:bg-gray-900 bg-gray-100 rounded" required min="0" step="0.01">
+                            <input id="sizeInput" type="number" name="size" placeholder="0.7" value="<%- pokemon.size -%>" class="w-full p-2 border dark:border-gray-700 border-gray-300 dark:bg-gray-900 bg-gray-100 rounded" required min="0" step="0.01">
                         </div>
                         
                         <div>
                             <label for="weightInput" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Weight (kg)</label>
-                            <input id="weightInput" type="number" name="weight" placeholder="6.9" class="w-full p-2 border dark:border-gray-700 border-gray-300 dark:bg-gray-900 bg-gray-100 rounded" required min="0" step="0.01">
+                            <input id="weightInput" type="number" name="weight" placeholder="6.9" value="<%- pokemon.weight -%>" class="w-full p-2 border dark:border-gray-700 border-gray-300 dark:bg-gray-900 bg-gray-100 rounded" required min="0" step="0.01">
                         </div>
                     </fieldset>
 
@@ -47,99 +42,41 @@
 
                         <div>
                             <label for="type1Input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First type</label>
-                            <input id="type1Input" type="text" name="type1" placeholder="Grass" class="w-full p-2 border dark:border-gray-700 border-gray-300 dark:bg-gray-900 bg-gray-100 rounded" required list="typesDataList">
+                            <input id="type1Input" type="text" name="type1" placeholder="Grass" value="<%- pokemon.types[0] -%>" class="w-full p-2 border dark:border-gray-700 border-gray-300 dark:bg-gray-900 bg-gray-100 rounded" required list="typesDataList">
                         </div>
 
                         <div>
                             <label for="type2Input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Second type</label>
-                            <input id="type2Input" type="text" name="type2" placeholder="Poison" class="w-full p-2 border dark:border-gray-700 border-gray-300 dark:bg-gray-900 bg-gray-100 rounded" list="typesDataList">
+                            <input id="type2Input" type="text" name="type2" placeholder="Poison" <% if (pokemon.types.length === 2) { %> value="<%- pokemon.types[1] -%>" <% } %> class="w-full p-2 border dark:border-gray-700 border-gray-300 dark:bg-gray-900 bg-gray-100 rounded" list="typesDataList">
                         </div>
 
                         <div class="md:col-span-2">
                             <label for="abilityInput" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Second type</label>
-                            <input id="abilityInput" type="text" name="ability" placeholder="Overgrow" class="w-full p-2 border dark:border-gray-700 border-gray-300 dark:bg-gray-900 bg-gray-100 rounded" required list="abilitiesDataList">
+                            <input id="abilityInput" type="text" name="ability" placeholder="Overgrow" value="<%- pokemon.ability.name -%>" class="w-full p-2 border dark:border-gray-700 border-gray-300 dark:bg-gray-900 bg-gray-100 rounded" required list="abilitiesDataList">
                         </div>
 
                         <datalist id="typesDataList"></datalist>
                         <datalist id="abilitiesDataList"></datalist>
                     </fieldset>
 
-                    <textarea id="descriptionTextArea" placeholder="Description" class="w-full mb-3 p-2 border dark:border-gray-700 border-gray-300 dark:bg-gray-900 bg-gray-100 rounded" rows="4" cols="50" maxlength="200" required></textarea>
+                    <textarea id="descriptionTextArea" placeholder="Description" class="w-full mb-3 p-2 border dark:border-gray-700 border-gray-300 dark:bg-gray-900 bg-gray-100 rounded" rows="4" cols="50" maxlength="200" required><%- pokemon.description -%></textarea>
                 
                     <div>
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="imageFileInput">Choose an image</label>
                         <input id="imageFileInput" type="file" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help">
                         <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="imageFileInputHelp">GIF, JPG, PNG, SVG or WEBP (MAX. 1 MB).</p>
                     
-                        <image id="imagePreview" class="w-64 h-64 object-cover rounded-lg mt-3" src="" alt="No image selected"></image>
+                        <image id="imagePreview" class="w-64 h-64 object-cover rounded-lg mt-3" src="<%- pokemon.image -%>" alt="No image selected"></image>
                     </div>
 
-                    <button id="submit" type="submit" class="bg-blue-500 text-white w-full px-4 py-2 rounded mt-5">Add pokemon</button>
+                    <button id="submit" type="submit" class="bg-blue-500 text-white w-full px-4 py-2 rounded mt-5">Update <%- pokemon.name -%></button>
                 </form>
             </section>
         </main>
 
         <script type="module">
-            /**
-             * Verify if the type exists.
-             * @param {Event} event - The event
-             */
-            function verifyType(event)
-            {
-                const target = event.target;
-                const value = event.target.value;
-
-                if (type1Input.value === type2Input.value) {
-                    target.setCustomValidity('You can\'t choose the same type twice');
-                }
-                else if (types.indexOf(value) === -1) {
-                    target.setCustomValidity('The type you entered doesn\'t exist');
-                }
-                else {
-                    target.setCustomValidity('');
-                }
-
-                target.reportValidity();
-            }
-
-            /**
-             * Verify if the ability exists.
-             * @param {Event} event - The event
-             */
-            function verifyAbility(event)
-            {
-                const target = event.target;
-                const value = event.target.value;
-
-                if (abilities.indexOf(value) === -1) {
-                    target.setCustomValidity('The ability you entered doesn\'t exist');
-                }
-                else {
-                    target.setCustomValidity('');
-                }
-
-                target.reportValidity();
-            }
-
-            /**
-             * Read a file and return a promise with the data url.
-             * @param {File} file - The file to read
-             * @returns {Promise<string>} - The data url
-             */
-            function getFileDataURL(file)
-            {
-                return new Promise((resolve, reject) =>
-                {
-                    const reader = new FileReader();
-                    reader.readAsDataURL(file);
-                    reader.onload = function () {
-                        resolve(reader.result);
-                    };
-                    reader.onerror = function (error) {
-                        reject(error);
-                    };
-                });
-            }
+            import fastDeepEqual from '/js/fast-deep-equal@3.1.3.mjs';
+            import { abilities, types, getFileDataURL, verifyAbility, verifyType } from '/js/main.mjs'
 
 
             const form = document.querySelector('form');
@@ -151,20 +88,29 @@
             const abilityInput = document.querySelector('#abilityInput');
             const weightInput = document.querySelector('#weightInput');
             const sizeInput = document.querySelector('#sizeInput');
-            const idInput = document.querySelector('#idInput');
             const nameInput = document.querySelector('#nameInput');
             const typesDataList = document.querySelector('#typesDataList');
             const abilitiesDataList = document.querySelector('#abilitiesDataList');
             const imagePreview = document.querySelector('#imagePreview');
+            const pokemon = {
+                name: nameInput.value,
+                id: "<%- pokemon.id -%>",
+                size: <%- pokemon.size -%>,
+                weight: <%- pokemon.weight -%>,
+                ability: "<%- pokemon.ability.name -%>",
+                types: <%- JSON.stringify(pokemon.types) -%>,
+                description: "<%- pokemon.description -%>",
+                image: {
+                    name: "<%- pokemon.image.name -%>",
+                }
+            }
 
-            const types = (await (await fetch('/types.json')).json()).map(x => x.name);
             for (const x of types) {
                 const option = document.createElement('option');
                 option.value = x;
                 typesDataList.appendChild(option);
             }
 
-            const abilities = (await (await fetch('/abilities.json')).json()).map(x => x.name);
             for (const x of abilities) {
                 const option = document.createElement('option');
                 option.value = x;
@@ -219,23 +165,37 @@
                     'image/webp': 'webp'
                 };
 
-                const pokemon = {
+                const updatedPokemon = {
                     name: nameInput.value,
-                    id: idInput.value.padStart(4, '0'),
                     size: Number.parseFloat(sizeInput.value),
                     weight: Number.parseFloat(weightInput.value),
                     ability: abilityInput.value,
                     types: [type1Input.value, type2Input.value].filter(x => x !== ''),
                     description: descriptionTextArea.value,
-                    image: {
-                        name: `${idInput.value.padStart(4, '0')}.${fileExtensions[file.type]}`,
+                    image: !file ? pokemon.image : {
+                        name: `${pokemon.id.padStart(4, '0')}.${fileExtensions[file.type]}`,
                         data: await getFileDataURL(file)
                     }
                 }
 
-                const response = await fetch('/api/pokemons', {
-                    method: 'POST',
-                    body: JSON.stringify(pokemon),
+                for (const key in updatedPokemon) {
+                    if (fastDeepEqual(updatedPokemon[key], pokemon[key])) {
+                        delete updatedPokemon[key];
+                    }
+                }
+
+                if (Object.keys(updatedPokemon).length === 0) {
+                    if (confirm('No changes were made. Would you like to go back to the pokemon page?')) {
+                        window.location = `/${pokemon.id}`;
+                        return;
+                    }
+
+                    return;
+                }
+
+                const response = await fetch(`/api/pokemons/${pokemon.id}`, {
+                    method: 'PATCH',
+                    body: JSON.stringify(updatedPokemon),
                     headers: {
                         'Content-Type': 'application/json'
                     }

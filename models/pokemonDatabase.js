@@ -21,11 +21,40 @@ module.exports = class PokemonDatabase
         if (fs.existsSync(path.join('data', `${pokemon.id}.json`)))
             return false;
 
-        try {
+        try
+        {
             await PokemonDatabase.setImage(pokemon.image.name, pokemon.image.data);
             delete pokemon.image;
             await fs.promises.writeFile(path.join('data', `${pokemon.id}.json`), JSON.stringify(pokemon));
 
+            return true;
+        }
+        catch (error) {
+            console.error(error);
+            return false;
+        }
+    }
+
+
+    /**
+     * Delete a pokemon from the database.
+     * @param {string} id - The id of the pokemon to be deleted
+     * @returns {Promise<boolean>} True if the pokemon was deleted successfully, false otherwise
+     */
+    static async delete(id)
+    {
+        if (id == null)
+            return false;
+
+        try
+        {
+            await fs.promises.unlink(path.join('data', `${id}.json`));
+            const imagePath = await PokemonDatabase.getImage(id);
+
+            if (imagePath != null)
+                return true;
+
+            await fs.promises.unlink(path.join('static', 'img', 'pokemons', imagePath));
             return true;
         }
         catch (error) {
@@ -128,8 +157,6 @@ module.exports = class PokemonDatabase
             .filter(x => x.atk_effectives.length > 0 && x.name !== type)
             .map(x => x.name);
 
-        console.log(type, types);
-
         // Return a unique array of types, use Set object to remove duplicates in the array
         return types || [];
     }
@@ -148,8 +175,6 @@ module.exports = class PokemonDatabase
             }))
             .filter(x => x.atk_effectives.length > 0 && x.name !== type)
             .map(x => x.name);
-
-        console.log(type, types);
 
         // Return a unique array of types, use Set object to remove duplicates in the array
         return types || [];
@@ -196,6 +221,47 @@ module.exports = class PokemonDatabase
         }
         catch (error) {
             console.error(error);
+        }
+    }
+
+
+    /**
+     * Update the pokemon in the database.
+     * @param {string} id - The id of the pokemon to be updated
+     * @param {object} data - The data to be updated
+     * @returns {Promise<boolean>} True if the pokemon was deleted successfully, false otherwise
+     */
+    static async update(id, data)
+    {
+        if (!fs.existsSync(path.join('data', `${id}.json`)))
+            return false;
+
+        try 
+        {
+            const pokemon = JSON.parse(await fs.promises.readFile(path.join('data', `${id}.json`), 'utf8'));
+
+            // Only update the properties that are not null
+            for (let key in data)
+            {
+                if (key === 'image')
+                    continue;
+
+                pokemon[key] = data[key];
+            }
+
+            console.log(data);
+
+            // Update the image if it was changed
+            if (data.image)
+                await PokemonDatabase.setImage(data.image.name, data.image.data);
+
+            await fs.promises.writeFile(path.join('data', `${id}.json`), JSON.stringify(pokemon));
+
+            return true;
+        }
+        catch (error) {
+            console.error(error);
+            return false;
         }
     }
 }

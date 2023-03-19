@@ -23,6 +23,16 @@ app.get('/', async (req, res) => {
 app.get('/add', async (req, res) => {
     res.render('add');
 });
+app.get('/edit/:id', async (req, res) => {
+    const pokemon = await PokemonDatabase.get(req.params.id);
+
+    if (pokemon == null) {
+        res.sendStatus(404);
+        return;
+    }
+
+    res.render('edit', { Pokemon: require('./models/pokemon'), pokemon: pokemon });
+});
 app.get('/favicon.ico', (req, res) => {
     res.sendStatus(404);
 });
@@ -48,6 +58,22 @@ app.get('*', function(req, res){
 // });
 
 
+app.patch('/api/pokemons/:id', async (req, res) =>
+{
+    try {
+        if (!(await PokemonDatabase.update(req.params.id, req.body))) {
+            res.sendStatus(500);
+            return;
+        }
+
+        res.sendStatus(200);
+    }
+    catch (error) {
+        console.error(error);
+        res.sendStatus(500);
+    }
+});
+
 app.post('/api/pokemons', async (req, res) =>
 {
     try
@@ -65,10 +91,10 @@ app.post('/api/pokemons', async (req, res) =>
     }
 });
 
-app.delete('/api/pokemons', async (req, res) =>
+app.delete('/api/pokemons/:id', async (req, res) =>
 {
     try {
-        await fs.promises.unlink('./data/tasks.json');
+        await PokemonDatabase.delete(req.params.id);
     }
     catch {
         res.sendStatus(500);

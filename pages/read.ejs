@@ -26,7 +26,9 @@
                         <div id="abilityDialog" class="hidden absolute top-0 left-0 bg-indigo-500 rounded p-4 text-white text-sm h-full overflow-y-auto">
                             <div class="flex flex-row">
                                 <small class="font-bold text-sm text-gray-200 mb-2 block">Information about the ability</small>
-                                <button onclick="abilityDialog.classList.toggle('hidden')" title="Close ability information dialog" class="ml-auto w-6 h-6 font-bold rounded-full bg-white text-indigo-500">X</button>
+                                <button onclick="abilityDialog.classList.toggle('hidden')" title="Close ability information dialog" class="ml-auto w-6 h-6 font-bold rounded-full bg-white text-indigo-500">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14"><g><g><line x1="9.12" y1="4.88" x2="4.88" y2="9.12" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></line><line x1="4.88" y1="4.88" x2="9.12" y2="9.12" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></line></g></g></svg>
+                                </button>
                             </div>
 
                             <p class="font-bold text-lg"><%- pokemon.ability.name -%></p>
@@ -43,7 +45,10 @@
 
                             <div class="flex flex-row items-center">
                                 <p><%- pokemon.ability.name -%></p>
-                                <button onclick="abilityDialog.classList.toggle('hidden')" title="Open ability information dialog" class="ml-2 w-5 h-5 text-sm font-bold rounded-full bg-white text-blue-500">?</button>
+                                
+                                <button onclick="abilityDialog.classList.toggle('hidden')" title="Open ability information dialog" class="ml-2 w-5 h-5 text-sm font-bold rounded-full bg-white text-blue-500">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14"><g><path d="M5.5,5.5A1.5,1.5,0,1,1,7,7V8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path><path d="M7,9.5a.75.75,0,1,0,.75.75A.76.76,0,0,0,7,9.5Z" fill="currentColor"></path></g></svg>
+                                </button>
                             </div>
                         </div>
 
