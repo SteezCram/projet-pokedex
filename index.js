@@ -13,15 +13,15 @@ const port = 3000;
 app.use(express.json({ limit: '10mb' }));
 app.set('view engine', 'ejs');
 app.set('views', [path.join(__dirname, 'pages'), path.join(__dirname, 'layouts')]);
-app.use(express.static('assets'));
-app.use(express.static('static'));
+app.use(express.static('assets', { maxAge: 2592000000 }));
+app.use(express.static('static', { maxAge: 2592000000 }));
 
 
 app.get('/', async (req, res) => {
-    res.render('index', { Pokemon: require('./models/pokemon'), pokemons: await PokemonDatabase.getAll() });
+    res.render('index', { Pokemon: require('./models/pokemon'), pokemons: await PokemonDatabase.getAll(), route: 'index' });
 });
 app.get('/add', async (req, res) => {
-    res.render('add');
+    res.render('add', { route: 'add' });
 });
 app.get('/edit/:id', async (req, res) =>
 {
@@ -32,7 +32,7 @@ app.get('/edit/:id', async (req, res) =>
         return;
     }
 
-    res.render('edit', { Pokemon: require('./models/pokemon'), pokemon: pokemon });
+    res.render('edit', { Pokemon: require('./models/pokemon'), pokemon: pokemon, route: 'edit' });
 });
 app.get('/favicon.ico', (req, res) => {
     res.sendStatus(404);
@@ -46,7 +46,7 @@ app.get('/:id', async (req, res) =>
         return;
     }
 
-    res.render('read', { Pokemon: require('./models/pokemon'), pokemon: pokemon });
+    res.render('read', { Pokemon: require('./models/pokemon'), pokemon: pokemon, route: 'read' });
 });
 app.get('*', function(req, res){
     res.sendStatus(404);

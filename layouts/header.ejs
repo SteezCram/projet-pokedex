@@ -10,7 +10,11 @@
         </div>
 
         <div class="pr-8 md:block hidden">
-            <a href="/add" class="p-4">Add pokemon</a>
+            <% if (route && route === 'add') { %>
+                <a href="/" class="p-4 hover:text-gray-500">Home</a>
+            <% } else { %>
+                <a href="/add" class="p-4 hover:text-gray-500">Add pokemon</a>
+            <% } %>
         </div>
     </nav>
 </header>

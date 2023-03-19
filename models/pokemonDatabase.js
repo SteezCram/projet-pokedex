@@ -248,9 +248,7 @@ module.exports = class PokemonDatabase
 
                 pokemon[key] = data[key];
             }
-
-            console.log(data);
-
+            
             // Update the image if it was changed
             if (data.image)
                 await PokemonDatabase.setImage(data.image.name, data.image.data);
