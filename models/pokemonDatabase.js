@@ -22,14 +22,18 @@ module.exports = class PokemonDatabase
             return false;
 
         try {
+            await PokemonDatabase.setImage(pokemon.image.name, pokemon.image.data);
             delete pokemon.image;
             await fs.promises.writeFile(path.join('data', `${pokemon.id}.json`), JSON.stringify(pokemon));
+
+            return true;
         }
         catch (error) {
             console.error(error);
             return false;
         }
     }
+
 
     /**
      * Get a pokemon from the database.
@@ -44,11 +48,29 @@ module.exports = class PokemonDatabase
         if (!fs.existsSync(path.join('data', `${id}.json`)))
             return null;
 
-        try {
+        try
+        {
             let pokemonData = JSON.parse(await fs.promises.readFile(path.join('data', `${id}.json`)));
             
             const pokemon = new Pokemon(pokemonData.id, pokemonData.name, pokemonData.size, pokemonData.weight, pokemonData.types, pokemonData.ability, pokemonData.description);
+            pokemon.ability.description = await PokemonDatabase.getAbilityDescription(pokemon.ability.name);
             pokemon.image = await PokemonDatabase.getImage(pokemon.id);
+            // Remove duplicates using the Set object
+            pokemon.strengths = [...new Set((await PokemonDatabase.getStrengths(pokemon.types[0])).concat(await PokemonDatabase.getStrengths(pokemon.types[1] || [])))];
+            pokemon.weaknesses = [...new Set((await PokemonDatabase.getWeaknesses(pokemon.types[0])).concat(await PokemonDatabase.getWeaknesses(pokemon.types[1] || [])))]
+                .filter(x => x !== pokemon.types[0] && x !== pokemon.types[1]);
+
+            // Remove the strengths that are also weaknesses
+            for (let i = 0; i < pokemon.strengths.length; i++)
+            {
+                let index = pokemon.weaknesses.indexOf(pokemon.strengths[i]);
+
+                if (index !== -1)
+                {
+                    pokemon.strengths.splice(i, 1);
+                    pokemon.weaknesses.splice(index, 1);
+                }
+            }
             
             return pokemon;
         }
@@ -70,11 +92,69 @@ module.exports = class PokemonDatabase
         for (let i = 0; i < files.length; i++)
         {
             const pokemon = await PokemonDatabase.get(files[i].split('.')[0]);
+            if (pokemon == null) continue;
+
             pokemons.push(pokemon);
         }
 
         return pokemons;
     }
+
+
+    /**
+     * Get the description of the ability of the pokemon.
+     * @param {string} ability - The ability of the pokemon
+     * @returns {Promise<string>} A promise that resolves when the description is set and return the description
+     */
+    static async getAbilityDescription(ability)
+    {
+        const abilities = JSON.parse(await fs.promises.readFile(path.join('static', 'abilities.json'), 'utf8'));
+
+        return abilities.find(x => x.name === ability).description || 'No description available';
+    }
+
+    /**
+     * Get the strengths for a pokemon type.
+     * @param {string} type - The type of the pokemon
+     * @returns {Promise<Array<string>>} A promise that resolves when the strengths are set and return the strengths
+     */
+    static async getStrengths(type)
+    {
+        const types = JSON.parse(await fs.promises.readFile(path.join('static', 'types.json'), 'utf8'))
+            .map(x => ({
+                name: x.name,
+                atk_effectives: x.atk_effectives.filter(y => y[0] === type && y[1] < 1)
+            }))
+            .filter(x => x.atk_effectives.length > 0 && x.name !== type)
+            .map(x => x.name);
+
+        console.log(type, types);
+
+        // Return a unique array of types, use Set object to remove duplicates in the array
+        return types || [];
+    }
+
+    /**
+     * Get the weaknesses for a pokemon type.
+     * @param {string} type - The type of the pokemon
+     * @returns {Promise<Array<string>>} A promise that resolves when the weaknesses are set and return the weaknesses
+     */
+    static async getWeaknesses(type)
+    {
+        const types = JSON.parse(await fs.promises.readFile(path.join('static', 'types.json'), 'utf8'))
+            .map(x => ({
+                name: x.name,
+                atk_effectives: x.atk_effectives.filter(y => y[0] === type && y[1] > 1)
+            }))
+            .filter(x => x.atk_effectives.length > 0 && x.name !== type)
+            .map(x => x.name);
+
+        console.log(type, types);
+
+        // Return a unique array of types, use Set object to remove duplicates in the array
+        return types || [];
+    }
+
 
     /**
      * Get the image of the pokemon.
@@ -83,8 +163,16 @@ module.exports = class PokemonDatabase
      */
     static async getImage(id)
     {
+        if (id == null)
+            return '';
+
         const files = await fs.promises.readdir(path.join('static', 'img', 'pokemons'));
-        return `/img/pokemons/${files.find(file => file.startsWith(id))}`;
+        const fileName = files.find(file => file.startsWith(id));
+
+        if (!fileName)
+            return '';
+
+        return `/img/pokemons/${fileName}`;
     }
 
     /**

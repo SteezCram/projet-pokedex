@@ -17,14 +17,14 @@
             <section class="grid md:gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 <% pokemons.forEach(x => { %>
                     <article onclick="window.location = `/<%- x.id -%>`" class="flex flex-col rounded dark:bg-gray-900 bg-gray-100 cursor-pointer hover:scale-105 duration-200 ease-in-out">
-                        <img class="rounded-t w-64 h-64" src="<%- x.image -%>" alt="<%- x.name -%>">
+                        <img class="rounded-t w-64 h-64 dark:bg-gray-800 bg-gray-200" src="<%- x.image -%>" alt="<%- x.name -%>">
                         
-                        <div class="p-2">
+                        <div class="p-4">
                             <p class="mb-1">n°<%- x.id -%></p>
                             <h3 class="text-xl font-bold"><%- x.name -%></h3>
                         </div>
 
-                        <div class="flex flex-row px-2 pb-2">
+                        <div class="flex flex-row px-4 pb-4">
                             <% x.types.forEach(y => { %>
                                 <p class="px-2 py-1 rounded-full text-sm font-bold text-white mr-2" style="background-color: <%- Pokemon.getTypeColor(y) -%>;"><%- y -%></p>
                             <% }); %>

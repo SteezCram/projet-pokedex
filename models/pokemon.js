@@ -5,15 +5,30 @@ const PokemonDatabase = require('./pokemonDatabase');
 
 module.exports = class Pokemon
 {
-    constructor(id, name, size, weight, types, ability, description = '') {
+    /**
+     * 
+     * @param {string} id - The id of the pokemon
+     * @param {string} name - The name of the pokemon
+     * @param {float} size - The size of the pokemon in meters
+     * @param {float} weight - The weight of the pokemon in kilograms
+     * @param {Array<string>} types - The type(s) of the pokemon
+     * @param {string} ability - The ability name of the pokemon
+     * @param {string} description - The description of the pokemon
+     */
+    constructor(id, name, size, weight, types, ability, description = '')
+    {
         this.id = id;
         this.name = name;
         this.size = size;
         this.weight = weight;
         this.types = types;
-        this.ability = ability;
+        this.ability = {
+            name: ability,
+            description: '',
+        };
         this.description = description;
     }
+
 
     /**
      * Get the color of the type of the pokemon.
@@ -46,6 +61,24 @@ module.exports = class Pokemon
         };
         
         return colours[type] || '#777';
+    }
+
+    /**
+     * Get the description of the ability of the pokemon.
+     * @param {string} ability - The ability of the pokemon
+     * @returns {Promise<string>} A promise that resolves when the description is set and return the description
+     */
+    static async getAbilityDescription(ability) {
+        return await PokemonDatabase.getAbilityDescription(ability);
+    }
+
+    /**
+     * Get the weaknesses for a pokemon type.
+     * @param {string} type - The type of the pokemon
+     * @returns {Promise<Array<string>>} A promise that resolves when the weaknesses are set and return the weaknesses
+     */
+    static async getWeaknesses(type) {
+        return await PokemonDatabase.getWeaknesses(type);
     }
 
 

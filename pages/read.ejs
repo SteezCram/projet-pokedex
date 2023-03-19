@@ -17,12 +17,22 @@
             <h3 class="text-xl font-bold text-center mb-5"><%- pokemon.name -%> n°<%- pokemon.id -%></h3>
 
             <section class="grid md:gap-4 grid-cols-1 md:grid-cols-2">
-                <img class="rounded w-72 h-72 bg-gray-100 ml-auto mb-3 md:mb-0" src="<%- pokemon.image -%>" alt="<%- pokemon.name -%>">
+                <img class="rounded md:w-72 md:h-72 lg:w-80 lg:h-80 xl:w-96 xl:h-96 bg-gray-100 dark:bg-gray-900 ml-auto mb-3 md:mb-0" src="<%- pokemon.image -%>" alt="<%- pokemon.name -%>">
                 
-                <article class="mr-auto w-72">
+                <article class="mr-auto md:w-72 lg:w-80 xl:w-96">
                     <p class="mb-3"><%- pokemon.description -%></p>
 
-                    <div class="bg-blue-500 rounded p-4 grid grid-cols-1 md:grid-cols-2 md:gap-2 mb-3">
+                    <div class="bg-blue-500 rounded p-4 grid grid-cols-1 md:grid-cols-2 md:gap-2 mb-3 relative">
+                        <div id="abilityDialog" class="hidden absolute top-0 left-0 bg-indigo-500 rounded p-4 text-white text-sm h-full overflow-y-auto">
+                            <div class="flex flex-row">
+                                <small class="font-bold text-sm text-gray-200 mb-2 block">Information about the ability</small>
+                                <button onclick="abilityDialog.classList.toggle('hidden')" title="Close ability information dialog" class="ml-auto w-6 h-6 font-bold rounded-full bg-white text-indigo-500">X</button>
+                            </div>
+
+                            <p class="font-bold text-lg"><%- pokemon.ability.name -%></p>
+                            <p><%- pokemon.ability.description -%></p>
+                        </div>
+
                         <div class="flex flex-col mb-1 md:mb-0">
                             <p class="font-bold">Size</p>
                             <p><%- pokemon.size -%> m</p>
@@ -30,7 +40,11 @@
 
                         <div class="flex flex-col mb-1 md:mb-0">
                             <p class="font-bold">Ability</p>
-                            <p><%- pokemon.ability -%></p>
+
+                            <div class="flex flex-row items-center">
+                                <p><%- pokemon.ability.name -%></p>
+                                <button onclick="abilityDialog.classList.toggle('hidden')" title="Open ability information dialog" class="ml-2 w-5 h-5 text-sm font-bold rounded-full bg-white text-blue-500">?</button>
+                            </div>
                         </div>
 
                         <div class="flex flex-col">
@@ -39,11 +53,31 @@
                         </div>
                     </div>
 
-                    <p class="font-bold mb-1">Type(s)</p>
-                    <div class="flex flex-row">
-                        <% pokemon.types.forEach(y => { %>
-                            <p class="px-2 py-1 rounded-full text-sm font-bold text-white mr-2" style="background-color: <%- Pokemon.getTypeColor(y) -%>;"><%- y -%></p>
-                        <% }); %>
+                    <div class="mb-3">
+                        <p class="font-bold mb-1">Type(s)</p>
+                        <div class="flex flex-row flex-wrap">
+                            <% pokemon.types.forEach(y => { %>
+                                <p class="px-2 py-1 rounded-full text-sm font-bold text-white m-1" style="background-color: <%- Pokemon.getTypeColor(y) -%>;"><%- y -%></p>
+                            <% }); %>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <p class="font-bold mb-1">Strengths</p>
+                        <div class="flex flex-row flex-wrap">
+                            <% pokemon.strengths.forEach(y => { %>
+                                <p class="px-2 py-1 rounded-full text-sm font-bold text-white m-1" style="background-color: <%- Pokemon.getTypeColor(y) -%>;"><%- y -%></p>
+                            <% }); %>
+                        </div>
+                    </div>
+
+                    <div>
+                        <p class="font-bold mb-1">Weaknesses</p>
+                        <div class="flex flex-row flex-wrap">
+                            <% pokemon.weaknesses.forEach(y => { %>
+                                <p class="px-2 py-1 rounded-full text-sm font-bold text-white m-1" style="background-color: <%- Pokemon.getTypeColor(y) -%>;"><%- y -%></p>
+                            <% }); %>
+                        </div>
                     </div>
                 </article>
             </section>
