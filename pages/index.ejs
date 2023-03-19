@@ -13,10 +13,10 @@
     <body class="min-h-screen w-screen flex flex-col dark:bg-black bg-white dark:text-white text-black">
         <%- include('../layouts/header.ejs'); -%>
 
-        <main class="dark:bg-black bg-white flex-1 p-8 mx-auto max-w-md md:max-w-xl lg:max-w-4xl 2xl:max-w-7xl">
+        <main class="dark:bg-black bg-white flex-1 p-8 mx-auto max-w-md md:max-w-xl lg:max-w-4xl xl:max-w-7xl">
             <section class="grid md:gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 <% pokemons.forEach(x => { %>
-                    <article id="<%- x.id -%>" onclick="window.location = `/<%- x.id -%>`" class="flex flex-col rounded dark:bg-gray-900 bg-gray-100 cursor-pointer hover:scale-105 duration-200 ease-in-out">
+                    <article id="<%- x.id -%>" onclick="window.location = `/<%- x.id -%>`" class="flex flex-col rounded dark:bg-gray-900 bg-gray-100 cursor-pointer hover:scale-105 duration-200 ease-in-out mb-4 md:mb-0">
                         <img class="rounded-t w-64 h-64 dark:bg-gray-800 bg-gray-200" src="<%- x.image -%>" alt="<%- x.name -%>">
                         
                         <div class="p-4">

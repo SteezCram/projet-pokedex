@@ -13,8 +13,8 @@ const port = 3000;
 app.use(express.json({ limit: '10mb' }));
 app.set('view engine', 'ejs');
 app.set('views', [path.join(__dirname, 'pages'), path.join(__dirname, 'layouts')]);
-app.use(express.static('assets', { maxAge: 2592000000 }));
-app.use(express.static('static', { maxAge: 2592000000 }));
+app.use(express.static('assets', { maxAge: 604800, mustRevalidate: true }));
+app.use(express.static('static', { maxAge: 604800, mustRevalidate: true }));
 
 
 app.get('/', async (req, res) => {
