@@ -28,7 +28,7 @@
 
                         <div>
                             <label for="idInput" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ID</label>
-                            <input id="idInput" type="number" name="id" placeholder="1" class="w-full p-2 border dark:border-gray-700 border-gray-300 dark:bg-gray-900 bg-gray-100 rounded" required min="1">
+                            <input id="idInput" type="number" name="id" placeholder="1" class="w-full p-2 border dark:border-gray-700 border-gray-300 dark:bg-gray-900 bg-gray-100 rounded" required min="1" max="9999">
                         </div>
                         
                         <div>
@@ -80,66 +80,7 @@
         </main>
 
         <script type="module">
-            /**
-             * Verify if the type exists.
-             * @param {Event} event - The event
-             */
-            function verifyType(event)
-            {
-                const target = event.target;
-                const value = event.target.value;
-
-                if (type1Input.value === type2Input.value) {
-                    target.setCustomValidity('You can\'t choose the same type twice');
-                }
-                else if (types.indexOf(value) === -1) {
-                    target.setCustomValidity('The type you entered doesn\'t exist');
-                }
-                else {
-                    target.setCustomValidity('');
-                }
-
-                target.reportValidity();
-            }
-
-            /**
-             * Verify if the ability exists.
-             * @param {Event} event - The event
-             */
-            function verifyAbility(event)
-            {
-                const target = event.target;
-                const value = event.target.value;
-
-                if (abilities.indexOf(value) === -1) {
-                    target.setCustomValidity('The ability you entered doesn\'t exist');
-                }
-                else {
-                    target.setCustomValidity('');
-                }
-
-                target.reportValidity();
-            }
-
-            /**
-             * Read a file and return a promise with the data url.
-             * @param {File} file - The file to read
-             * @returns {Promise<string>} - The data url
-             */
-            function getFileDataURL(file)
-            {
-                return new Promise((resolve, reject) =>
-                {
-                    const reader = new FileReader();
-                    reader.readAsDataURL(file);
-                    reader.onload = function () {
-                        resolve(reader.result);
-                    };
-                    reader.onerror = function (error) {
-                        reject(error);
-                    };
-                });
-            }
+            import { abilities, types, getFileDataURL, verifyAbility, verifyType } from '/js/main.mjs'
 
 
             const form = document.querySelector('form');
@@ -157,14 +98,12 @@
             const abilitiesDataList = document.querySelector('#abilitiesDataList');
             const imagePreview = document.querySelector('#imagePreview');
 
-            const types = (await (await fetch('/types.json')).json()).map(x => x.name);
             for (const x of types) {
                 const option = document.createElement('option');
                 option.value = x;
                 typesDataList.appendChild(option);
             }
 
-            const abilities = (await (await fetch('/abilities.json')).json()).map(x => x.name);
             for (const x of abilities) {
                 const option = document.createElement('option');
                 option.value = x;
@@ -176,6 +115,27 @@
                 imagePreview.src = await getFileDataURL(imageFileInput.files[0]);
             }
 
+            idInput.addEventListener('change', async event =>
+            {
+                const target = event.target;
+                const value = target.value.padStart(4, '0');
+
+                if (value.match(/[^0-9]/g)) {
+                    target.setCustomValidity('The ID contains invalid characters');
+                }
+                else
+                {
+                    const response = await fetch(`/api/pokemons/${value}/exists`);
+                    console.log(response);
+                    
+                    if (response.ok)
+                        target.setCustomValidity('The ID is already taken');
+                    else
+                        target.setCustomValidity('');
+                }
+
+                target.reportValidity();
+            });
             type1Input.addEventListener('change', verifyType);
             type2Input.addEventListener('change', verifyType);
             abilityInput.addEventListener('change', verifyAbility);

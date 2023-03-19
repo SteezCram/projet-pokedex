@@ -48,11 +48,18 @@ app.get('/:id', async (req, res) =>
 
     res.render('read', { Pokemon: require('./models/pokemon'), pokemon: pokemon, route: 'read' });
 });
-app.get('*', function(req, res){
+
+
+// API pokemons requests
+app.get('/api/pokemons/:id/exists', async (req, res) =>
+{
+    if (await PokemonDatabase.exists(req.params.id)) {
+        res.sendStatus(200);
+        return;
+    }
+
     res.sendStatus(404);
 });
-
-
 app.patch('/api/pokemons/:id', async (req, res) =>
 {
     try {
@@ -68,8 +75,6 @@ app.patch('/api/pokemons/:id', async (req, res) =>
         res.sendStatus(500);
     }
 });
-
-
 app.post('/api/pokemons', async (req, res) =>
 {
     try
@@ -86,8 +91,6 @@ app.post('/api/pokemons', async (req, res) =>
         res.sendStatus(500);
     }
 });
-
-
 app.delete('/api/pokemons/:id', async (req, res) =>
 {
     try {
@@ -101,6 +104,10 @@ app.delete('/api/pokemons/:id', async (req, res) =>
     res.sendStatus(200);
 });
 
+
+app.get('*', function(req, res){
+    res.sendStatus(404);
+});
 
 app.listen(port, () => {
     console.log(`Listening to: http://localhost:${port}/`)

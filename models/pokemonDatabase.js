@@ -6,6 +6,21 @@ const Pokemon = require('./pokemon');
 
 
 
+function fileExists(itemPath)
+{
+    return new Promise((resolve, reject) =>
+    {
+        fs.access(itemPath, (err) => {
+            if (err) {
+                resolve(false)
+                return;
+            }
+
+            resolve(true);
+        });
+    });
+}
+
 module.exports = class PokemonDatabase
 {
     /**
@@ -18,7 +33,7 @@ module.exports = class PokemonDatabase
         if (pokemon == null)
             return false;
 
-        if (fs.existsSync(path.join('data', `${pokemon.id}.json`)))
+        if (await fileExists(path.join('data', `${pokemon.id}.json`)))
             return false;
 
         try
@@ -34,7 +49,6 @@ module.exports = class PokemonDatabase
             return false;
         }
     }
-
 
     /**
      * Delete a pokemon from the database.
@@ -63,6 +77,22 @@ module.exports = class PokemonDatabase
         }
     }
 
+    /**
+     * Verify if a pokemon exists in the database.
+     * @param {string} id - The id of the pokemon to verify
+     * @returns {Promise<boolean>} - True if the pokemon exists, false otherwise
+     */
+    static async exists(id)
+    {
+        if (id == null)
+            return false;
+
+        if (!await fileExists(path.join('data', `${id}.json`)))
+            return false;
+
+        return true;
+    }
+
 
     /**
      * Get a pokemon from the database.
@@ -74,7 +104,7 @@ module.exports = class PokemonDatabase
         if (id == null)
             return null;
 
-        if (!fs.existsSync(path.join('data', `${id}.json`)))
+        if (!await fileExists(path.join('data', `${id}.json`)))
             return null;
 
         try
@@ -212,7 +242,7 @@ module.exports = class PokemonDatabase
         if (imageName === null || imageDataBase64 === null)
             return;
 
-        if (!fs.existsSync(path.join('static', 'img', 'pokemons')))
+        if (!await fileExists(path.join('static', 'img', 'pokemons')))
             await fs.promises.mkdir(path.join('static', 'img', 'pokemons'), { recursive: true });
 
         try {
@@ -233,7 +263,7 @@ module.exports = class PokemonDatabase
      */
     static async update(id, data)
     {
-        if (!fs.existsSync(path.join('data', `${id}.json`)))
+        if (!await fileExists(path.join('data', `${id}.json`)))
             return false;
 
         try 
