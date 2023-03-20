@@ -53,7 +53,9 @@ app.get('/:id', async (req, res) =>
 // API pokemons requests
 app.get('/api/pokemons/:id/exists', async (req, res) =>
 {
-    if (await PokemonDatabase.exists(req.params.id)) {
+    const id = req.params.id.padStart(4, '0');
+
+    if (await PokemonDatabase.exists(id)) {
         res.sendStatus(200);
         return;
     }

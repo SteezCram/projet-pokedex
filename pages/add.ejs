@@ -118,7 +118,7 @@
             idInput.addEventListener('change', async event =>
             {
                 const target = event.target;
-                const value = target.value.padStart(4, '0');
+                const value = target.value;
 
                 if (value.match(/[^0-9]/g)) {
                     target.setCustomValidity('The ID contains invalid characters');
