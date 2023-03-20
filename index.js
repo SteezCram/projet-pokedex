@@ -63,6 +63,12 @@ app.get('/api/pokemons/:id/exists', async (req, res) =>
 
     res.sendStatus(404);
 });
+app.get('/api/pokemons/:name/search', async (req, res) =>
+{
+    const name = req.params.name;
+
+    res.send(await PokemonDatabase.search(name));
+});
 app.patch('/api/pokemons/:id', async (req, res) =>
 {
     try {
