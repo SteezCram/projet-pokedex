@@ -17,7 +17,7 @@ module.exports = class Pokemon
      */
     constructor(id, name, size, weight, types, ability, description = '')
     {
-        this.id = id;
+        this.id = id.padStart(4, '0');
         this.name = name;
         this.size = size;
         this.weight = weight;

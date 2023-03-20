@@ -23,6 +23,21 @@ app.get('/', async (req, res) => {
 app.get('/add', async (req, res) => {
     res.render('add', { route: 'add' });
 });
+app.get('/favicon.ico', (req, res) => {
+    res.sendStatus(404);
+});
+app.get('/:id', async (req, res) =>
+{
+    const id = req.params.id.padStart(4, '0');
+    const pokemon = await PokemonDatabase.get(id);
+
+    if (pokemon == null) {
+        res.sendStatus(404);
+        return;
+    }
+
+    res.render('read', { Pokemon: require('./models/pokemon'), pokemon: pokemon, route: 'read' });
+});
 app.get('/edit/:id', async (req, res) =>
 {
     const pokemon = await PokemonDatabase.get(req.params.id);
@@ -33,20 +48,6 @@ app.get('/edit/:id', async (req, res) =>
     }
 
     res.render('edit', { Pokemon: require('./models/pokemon'), pokemon: pokemon, route: 'edit' });
-});
-app.get('/favicon.ico', (req, res) => {
-    res.sendStatus(404);
-});
-app.get('/:id', async (req, res) =>
-{
-    const pokemon = await PokemonDatabase.get(req.params.id);
-
-    if (pokemon == null) {
-        res.sendStatus(404);
-        return;
-    }
-
-    res.render('read', { Pokemon: require('./models/pokemon'), pokemon: pokemon, route: 'read' });
 });
 
 

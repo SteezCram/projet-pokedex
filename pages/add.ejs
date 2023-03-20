@@ -181,14 +181,14 @@
 
                 const pokemon = {
                     name: nameInput.value,
-                    id: idInput.value.padStart(4, '0'),
+                    id: idInput.value,
                     size: Number.parseFloat(sizeInput.value),
                     weight: Number.parseFloat(weightInput.value),
                     ability: abilityInput.value,
                     types: [type1Input.value, type2Input.value].filter(x => x !== ''),
                     description: descriptionTextArea.value,
-                    image: {
-                        name: `${idInput.value.padStart(4, '0')}.${fileExtensions[file.type]}`,
+                    image: !file ? null : {
+                        name: `${idInput.value}.${fileExtensions[file.type]}`,
                         data: await getFileDataURL(file)
                     }
                 }

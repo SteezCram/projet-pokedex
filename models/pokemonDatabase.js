@@ -33,13 +33,21 @@ module.exports = class PokemonDatabase
         if (pokemon == null)
             return false;
 
+        pokemon.id = pokemon.id.padStart(4, '0');
+
         if (await fileExists(path.join('data', `${pokemon.id}.json`)))
             return false;
 
         try
         {
-            await PokemonDatabase.setImage(pokemon.image.name, pokemon.image.data);
+            if (pokemon.image != null)
+            {
+                pokemon.image.name = pokemon.image.name.padStart(4, '0');
+                await PokemonDatabase.setImage(pokemon.image.name, pokemon.image.data);
+            }
+
             delete pokemon.image;
+            
             await fs.promises.writeFile(path.join('data', `${pokemon.id}.json`), JSON.stringify(pokemon));
 
             return true;

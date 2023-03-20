@@ -47,14 +47,14 @@
         <script>
             async function deletePokemon(id, name)
             {
-                if (!confirm(`Are you sure you want to delete this ${name}?`)) return;
+                if (!confirm(`Are you sure you want to delete ${name}?`)) return;
 
                 const response = await fetch(`/api/pokemons/${id}`, {
                     method: 'DELETE'
                 });
 
                 if (!response.ok) {
-                    alert('An error occurred while deleting this Pokémon.');
+                    alert(`An error occurred while deleting ${name}.`);
                     return;
                 }
 
