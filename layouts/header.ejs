@@ -22,7 +22,7 @@
         </div>
     </nav>
 
-    <ul id="mobileMenu" class="w-full absolute z-50 hidden md:hidden mt-2 mx-1 rounded-lg dark:bg-gray-900 bg-gray-100 border border-gray-300 dark:border-gray-700">
+    <ul id="mobileMenu" class="w-full absolute z-10 hidden md:hidden mt-2 mx-1 rounded-lg dark:bg-gray-900 bg-gray-100 border border-gray-300 dark:border-gray-700">
         <li class="p-2">
             <%- include('../layouts/search.ejs') -%>
         </li>
@@ -35,4 +35,7 @@
             <% } %>
         </li>
     </ul>
+
+    <script src="/js/debounce.js"></script>
+    <script src="/js/search.js"></script>
 </header>

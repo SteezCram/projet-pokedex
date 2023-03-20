@@ -264,6 +264,60 @@ module.exports = class PokemonDatabase
 
 
     /**
+     * Search for a pokemon in the database by its name in the database.
+     * @param {string} name - Name of the pokemon to be searched
+     * @returns {Promise<Pokemon[]>} - An array of all the pokemons that match the search criteria
+     */
+    static async search(query)
+    {
+        // Trim query to avoid empty spaces
+        query = query.toLowerCase().trim();
+
+        let queryLength = query.length;
+        let pokemons = await PokemonDatabase.getAll();
+
+        let results = pokemons.map(pokemon =>
+        {
+            let searchItem = pokemon.name.toLowerCase();
+            let searchItemLength = searchItem.length;
+
+            let matrix = Array.from(Array(queryLength + 1).fill(0), () => new Array(searchItemLength + 1).fill(0));
+
+            for (let i = 0; i <= queryLength; i++)
+            {
+                matrix[i][0] = i;
+            }
+
+            for (let j = 0; j <= searchItemLength; j++)
+            {
+                matrix[0][j] = j;
+            }
+
+            for (let i = 1; i <= queryLength; i++)
+            {
+                for (let j = 1; j <= searchItemLength; j++)
+                {
+                    let cost = (searchItem[j - 1] == query[i - 1]) ? 0 : 1;
+                    
+                    matrix[i][j] = Math.min(Math.min(matrix[i - 1][j] + 1, matrix[i][j - 1] + 1), matrix[i - 1][j - 1] + cost);
+                }
+            }
+
+            return {
+                id: pokemon.id,
+                image: pokemon.image,
+                name: pokemon.name,
+                score: 1.0 - (matrix[queryLength][searchItemLength] / Math.max(queryLength, searchItemLength))
+            };
+        })
+        .filter(x => x.score > 0.35)
+        .slice(0, 3);
+        
+        return results;
+    }
+
+
+    /**
      * Update the pokemon in the database.
      * @param {string} id - The id of the pokemon to be updated
      * @param {object} data - The data to be updated

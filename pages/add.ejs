@@ -126,7 +126,6 @@
                 else
                 {
                     const response = await fetch(`/api/pokemons/${value}/exists`);
-                    console.log(response);
                     
                     if (response.ok)
                         target.setCustomValidity('The ID is already taken');
@@ -169,6 +168,7 @@
             {
                 // Prevent the form from submitting
                 event.preventDefault();
+                submit.disabled = true;
 
                 const file = imageFileInput.files[0];
                 const fileExtensions = {
@@ -203,6 +203,7 @@
 
                 if (!response.ok) {
                     alert('An error occured while adding the pokemon');
+                    submit.disabled = false;
                     return;
                 }
 

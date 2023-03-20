@@ -45,6 +45,12 @@
         </main>
 
         <script>
+            /**
+             * Send a request to the API to delete a pokemon.
+             * @param {string} id - The id of the pokemon to delete
+             * @param {string} name - The name of the pokemon to delete
+             * @returns {Promise<void>} A promise that resolves when the pokemon has been deleted
+             */
             async function deletePokemon(id, name)
             {
                 if (!confirm(`Are you sure you want to delete ${name}?`)) return;

@@ -7,4 +7,8 @@ module.exports = {
         extend: {},
     },
     plugins: [],
+    safelist: [
+        "w-8",
+        "h-8",
+    ]
 }

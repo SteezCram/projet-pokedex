@@ -57,7 +57,7 @@ app.get('/api/pokemons/:id/exists', async (req, res) =>
     const id = req.params.id.padStart(4, '0');
 
     if (await PokemonDatabase.exists(id)) {
-        res.sendStatus(200);
+        res.send(await PokemonDatabase.get(id));
         return;
     }
 
@@ -67,7 +67,13 @@ app.get('/api/pokemons/:name/search', async (req, res) =>
 {
     const name = req.params.name;
 
-    res.send(await PokemonDatabase.search(name));
+    try {
+        res.send(await PokemonDatabase.search(name));
+    }
+    catch (error) {
+        console.error(error);
+        res.sendStatus(404);
+    }
 });
 app.patch('/api/pokemons/:id', async (req, res) =>
 {
