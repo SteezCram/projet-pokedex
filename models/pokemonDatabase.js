@@ -42,7 +42,8 @@ module.exports = class PokemonDatabase
         {
             if (pokemon.image != null)
             {
-                pokemon.image.name = pokemon.image.name.padStart(4, '0');
+                pokemon.image.name = `${pokemon.id}${pokemon.image.name}`;
+                console.log(pokemon.image.name);
                 await PokemonDatabase.setImage(pokemon.image.name, pokemon.image.data);
             }
 
@@ -70,13 +71,14 @@ module.exports = class PokemonDatabase
 
         try
         {
-            await fs.promises.unlink(path.join('data', `${id}.json`));
             const imagePath = await PokemonDatabase.getImage(id);
 
-            if (imagePath != null)
-                return true;
+            if (imagePath === '')
+                return false;
 
-            await fs.promises.unlink(path.join('static', 'img', 'pokemons', imagePath));
+            await fs.promises.unlink(path.join('data', `${id}.json`));
+            await fs.promises.unlink(path.join('static', imagePath));
+            
             return true;
         }
         catch (error) {

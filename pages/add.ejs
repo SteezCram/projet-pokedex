@@ -187,7 +187,7 @@
                     types: [type1Input.value, type2Input.value].filter(x => x !== ''),
                     description: descriptionTextArea.value,
                     image: !file ? null : {
-                        name: `${idInput.value}.${fileExtensions[file.type]}`,
+                        name: `.${fileExtensions[file.type]}`,
                         data: await getFileDataURL(file)
                     }
                 }
