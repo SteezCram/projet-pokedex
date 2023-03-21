@@ -43,7 +43,6 @@ module.exports = class PokemonDatabase
             if (pokemon.image != null)
             {
                 pokemon.image.name = `${pokemon.id}${pokemon.image.name}`;
-                console.log(pokemon.image.name);
                 await PokemonDatabase.setImage(pokemon.image.name, pokemon.image.data);
             }
 
