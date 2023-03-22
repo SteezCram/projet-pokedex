@@ -6,6 +6,11 @@ const Pokemon = require('./pokemon');
 
 
 
+/**
+ * Verify if a file exists in the file system. This function is used to avoid the use of the synchronous method fs.existsSync().
+ * @param {string} itemPath - Path of the item to check
+ * @returns {Promise<boolean>} True if the item exists, false otherwise
+ */
 function fileExists(itemPath)
 {
     return new Promise((resolve, reject) =>
