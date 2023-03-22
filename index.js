@@ -1,4 +1,3 @@
-const fs = require('fs');
 const path = require('path');
 
 const PokemonDatabase = require('./models/pokemonDatabase');
@@ -26,6 +25,7 @@ app.get('/add', async (req, res) => {
 app.get('/favicon.ico', (req, res) => {
     res.sendStatus(404);
 });
+// Route to get a pokemon by its id
 app.get('/:id', async (req, res) =>
 {
     const id = req.params.id.padStart(4, '0');
@@ -38,6 +38,7 @@ app.get('/:id', async (req, res) =>
 
     res.render('read', { Pokemon: require('./models/pokemon'), pokemon: pokemon, route: 'read' });
 });
+// Route to get edit a pokemon its id
 app.get('/edit/:id', async (req, res) =>
 {
     const pokemon = await PokemonDatabase.get(req.params.id);
@@ -52,6 +53,19 @@ app.get('/edit/:id', async (req, res) =>
 
 
 // API pokemons requests
+// Get the a pokemon by its id
+app.get('/api/pokemons/:id', async (req, res) =>
+{
+    const id = req.params.id.padStart(4, '0');
+
+    if (await PokemonDatabase.exists(id)) {
+        res.send(await PokemonDatabase.get(id));
+        return;
+    }
+
+    res.sendStatus(404);
+});
+// Verify if a pokemon exists
 app.get('/api/pokemons/:id/exists', async (req, res) =>
 {
     const id = req.params.id.padStart(4, '0');
@@ -63,6 +77,7 @@ app.get('/api/pokemons/:id/exists', async (req, res) =>
 
     res.sendStatus(404);
 });
+// Find a pokemon by its name
 app.get('/api/pokemons/:name/search', async (req, res) =>
 {
     const name = req.params.name;
@@ -75,6 +90,7 @@ app.get('/api/pokemons/:name/search', async (req, res) =>
         res.sendStatus(404);
     }
 });
+// Update a pokemon by its id
 app.patch('/api/pokemons/:id', async (req, res) =>
 {
     try {
@@ -90,6 +106,7 @@ app.patch('/api/pokemons/:id', async (req, res) =>
         res.sendStatus(500);
     }
 });
+// Create a pokemon
 app.post('/api/pokemons', async (req, res) =>
 {
     try
@@ -106,6 +123,7 @@ app.post('/api/pokemons', async (req, res) =>
         res.sendStatus(500);
     }
 });
+// Delete a pokemon by its id
 app.delete('/api/pokemons/:id', async (req, res) =>
 {
     try {
@@ -120,6 +138,7 @@ app.delete('/api/pokemons/:id', async (req, res) =>
 });
 
 
+// Catch all other routes and send 404
 app.get('*', function(req, res){
     res.sendStatus(404);
 });
